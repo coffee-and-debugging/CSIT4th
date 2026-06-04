@@ -6,3 +6,6 @@ venv/
 
 __pycache__/
 
+node_modules/
+
+blog/static/src/output.css
