@@ -1,6 +1,13 @@
 from django.urls import path
-from .views import home
+from .views.auth_view import login, register
+from .views.main_view import create_blog, edit_blog, home, blog
 
 urlpatterns = [
-    path('', home, name='home'),
+    path('login/', login),
+    path('register/', register),
+
+    path('home', home),
+    path('create_blog/', create_blog),
+    path('edit_blog', edit_blog),
+    path('blog/<int:blog_id>/', blog)
 ]
