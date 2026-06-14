@@ -2,13 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def home(request):
-    return HttpResponse("This is Home Page")
+    return render(request, "main/home.html")
 
 def create_blog(request):
-    return HttpResponse("Let's cook something!")
+    return render(request, "main/create_blog.html")
 
 def edit_blog(request):
-    return HttpResponse("Ugh, i want to make some changes!")
+    return render(request, "main/edit_blog.html")
 
 def blog(request, blog_id):
     return HttpResponse(f'Blog id: {blog_id}')
