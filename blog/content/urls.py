@@ -6,8 +6,9 @@ urlpatterns = [
     path('login/', login),
     path('register/', register),
 
-    path('home', home),
-    path('create_blog/', create_blog),
+    path('home/', home, name="home"),
+    path('create_blog/', create_blog, name="create_blog"),
+    
     path('edit_blog', edit_blog),
     path('blog/<int:blog_id>/', blog)
 ]
