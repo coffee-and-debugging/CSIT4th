@@ -1,80 +1,408 @@
+<!-- create_blog.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}    
-    <link href="{% static 'src/output.css' %}" rel="stylesheet">
-    <title>Create Blog</title>
-    </head>
-    <body>
-        {% include "../components/_navbar.html" %}        
-        <div id="contact-us" class="overflow-hidden bg-white py-16 px-4 dark:bg-slate-900 sm:px-6 lg:px-8 lg:py-24">
-    <div class="relative mx-auto max-w-xl">
-        <svg class="absolute left-full translate-x-1/2 transform" width="404" height="404" fill="none"
-            viewBox="0 0 404 404" aria-hidden="true">
-            <defs>
-                <pattern id="85737c0e-0916-41d7-917f-596dc7edfa27" x="0" y="0" width="20" height="20"
-                    patternUnits="userSpaceOnUse">
-                    <rect x="0" y="0" width="4" height="4" class="text-gray-200 dark:text-slate-600"
-                        fill="currentColor"></rect>
-                </pattern>
-            </defs>
-            <rect width="404" height="404" fill="url(#85737c0e-0916-41d7-917f-596dc7edfa27)"></rect>
-        </svg>
-        <svg class="absolute right-full bottom-0 -translate-x-1/2 transform" width="404" height="404" fill="none"
-            viewBox="0 0 404 404" aria-hidden="true">
-            <defs>
-                <pattern id="85737c0e-0916-41d7-917f-596dc7edfa27" x="0" y="0" width="20" height="20"
-                    patternUnits="userSpaceOnUse">
-                    <rect x="0" y="0" width="4" height="4" class="text-gray-200 dark:text-slate-800"
-                        fill="currentColor"></rect>
-                </pattern>
-            </defs>
-            <rect width="404" height="404" fill="url(#85737c0e-0916-41d7-917f-596dc7edfa27)"></rect>
-        </svg>
-        <div class="text-center">
-            <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-slate-200 sm:text-4xl">Create a blog
-            </h2>
-            <p class="mt-4 text-lg leading-6 text-gray-500 dark:text-slate-400">Please use the form below to contact us.
-                Thank you!
-            </p>
-        </div>
-        <div class="mt-12">
-            <form method="POST" enctype="multipart/form-data" class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
-                {% csrf_token %}
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   {% load static %}
+   <link href="{% static 'src/output.css' %}" rel="stylesheet">
+   <title>New Post — Blog</title>
+   <style>
+      [contenteditable]:empty:before {
+         content: attr(data-placeholder);
+         color: #d1d5db;
+         pointer-events: none;
+         display: block;
+      }
+      [contenteditable]:focus { outline: none; }
+      [contenteditable].hide-placeholder:empty:before { display: none; }
+      #editor-description pre {
+         background: #f3f4f6;
+         border-radius: 0.5rem;
+         padding: 1rem 1.25rem;
+         font-family: monospace;
+         font-size: 0.875rem;
+         overflow-x: auto;
+         margin: 1.25rem 0;
+         white-space: pre-wrap;
+      }
+      #editor-description hr {
+         border: none;
+         border-top: 2px solid #e5e7eb;
+         margin: 2rem 0;
+      }
+      #editor-description iframe {
+         width: 100%;
+         aspect-ratio: 16/9;
+         border-radius: 0.5rem;
+         border: none;
+         margin: 1.25rem 0;
+         display: block;
+      }
+      #editor-description img {
+         max-width: 100%;
+         border-radius: 0.5rem;
+         margin: 1.25rem 0;
+         display: block;
+      }
+   </style>
+</head>
+<body class="flex flex-col min-h-screen bg-white">
 
-                <div class="sm:col-span-2">
-                    <label for="title" class="block text-sm font-medium text-gray-700 dark:text-slate-400">Title</label>
-                    <div class="mt-1">
-                        <input name="title" type="text" id="title" autocomplete="organization" required="" class="border border-gray-300 block w-full rounded-md py-3 px-4 shadow-sm focus:border-sky-500 focus:ring-sky-500 dark:border-white/5 dark:bg-slate-700/50 dark:text-white">
-                    </div>
-                </div>
-                <div class="sm:col-span-2">
-                    <label for="subtitle" class="block text-sm font-medium text-gray-700 dark:text-slate-400">Subtitle</label>
-                    <div class="mt-1">
-                        <input name="subtitle" type="text" id="subtitle" autocomplete="organization" required="" class="border border-gray-300 block w-full rounded-md py-3 px-4 shadow-sm focus:border-sky-500 focus:ring-sky-500 dark:border-white/5 dark:bg-slate-700/50 dark:text-white">
-                    </div>
-                </div>
-                <div class="sm:col-span-2">
-                    <label for="image" class="block text-sm font-medium text-gray-700 dark:text-slate-400">Image</label>
-                    <input type="file" name="image" id="image" class="mt-1 block w-full text-sm text-gray-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 dark:file:bg-gray-700/50 dark:file:text-white dark:hover:file:bg-gray-600/50">
-                </div>
+   {% include "../components/_navbar.html" %}
 
-                <div class="sm:col-span-2">
-                    <label for="message" class="block text-sm font-medium text-gray-700 dark:text-slate-400">Description</label>
-                    <div class="mt-1">
-                        <textarea required="" name="message" id="message" rows="4" class="border border-gray-300 block w-full rounded-md py-3 px-4 shadow-sm focus:border-sky-500 focus:ring-sky-500 dark:border-white/5 dark:bg-slate-700/50 dark:text-white"></textarea>
-                    </div>
-                </div>
-                <div class="flex justify-end sm:col-span-2">
-                    <button type="submit" class="inline-flex items-center rounded-md px-4 py-2 font-medium focus:outline-none focus-visible:ring focus-visible:ring-sky-500 shadow-sm sm:text-sm transition-colors duration-75 text-sky-500 border border-sky-500 hover:bg-sky-50 active:bg-sky-100 disabled:bg-sky-100 dark:hover:bg-gray-900 dark:active:bg-gray-800 dark:disabled:bg-gray-800 disabled:cursor-not-allowed">
-                        <span>Publish</span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+   <!-- Action bar -->
+   <div class="sticky top-16 z-10 bg-white border-b border-gray-100">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 py-2.5 flex items-center justify-between">
+         <a href="{% url 'home' %}"
+            class="text-sm text-gray-400 hover:text-gray-700 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded">
+            &larr; Home
+         </a>
+         <div class="flex items-center gap-3">
+            <button type="button" onclick="submitBlog()"
+               class="text-sm font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors px-4 py-1.5 rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2">
+               Publish
+            </button>
+         </div>
+      </div>
+   </div>
+
+   <!-- Hidden form — field names/ids unchanged for backend -->
+   <form id="blog-form" method="POST" enctype="multipart/form-data"
+      action="{% url 'create_blog' %}" class="hidden">
+      {% csrf_token %}
+      <input type="hidden" id="hidden-title" name="title" />
+      <input type="hidden" id="hidden-subtitle" name="subtitle" />
+      <input type="hidden" id="hidden-description" name="description" />
+      <input type="file" id="image" name="image" accept="image/*" />
+   </form>
+
+   <!-- Floating + button -->
+   <div id="plus-btn" class="fixed hidden z-30" style="transform:translateY(-50%)">
+      <div class="flex items-center gap-2">
+         <button type="button" id="plus-toggle" onclick="togglePlusMenu()"
+            class="size-7 rounded-full border border-gray-900 text-gray-900 hover:border-black hover:text-black flex items-center justify-center cursor-pointer transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500">
+            <svg id="plus-icon" class="size-4 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+         </button>
+         <!-- Expanded menu -->
+         <div id="plus-menu" class="hidden items-center gap-1.5">
+            <!-- Image -->
+            <button type="button" onclick="menuInsertImage()" title="Add image"
+               class="size-8 rounded-full border border-green-600 text-green-600 hover:bg-green-50 flex items-center justify-center cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500">
+               <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
+               </svg>
+            </button>
+            <!-- Video -->
+            <button type="button" id="menu-video" onclick="menuInsertVideo()" title="Add video"
+               class="size-8 rounded-full border border-green-600 text-green-600 hover:bg-green-50 flex items-center justify-center cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500">
+               <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+               </svg>
+            </button>
+            <!-- Code -->
+            <button type="button" id="menu-code" onclick="menuInsertCode()" title="Add code"
+               class="size-8 rounded-full border border-green-600 text-green-600 hover:bg-green-50 flex items-center justify-center cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500">
+               <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+               </svg>
+            </button>
+            <!-- Divider / Part -->
+            <button type="button" id="menu-divider" onclick="menuInsertDivider()" title="Add section break"
+               class="size-8 rounded-full border border-green-600 text-green-600 hover:bg-green-50 flex items-center justify-center cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500">
+               <span class="text-sm font-bold tracking-widest">&#x2014;</span>
+            </button>
+         </div>
+      </div>
+   </div>
+
+   <!-- Editor surface -->
+   <main class="flex-1 w-full max-w-4xl mx-auto px-4 md:px-8 py-10" id="editor-main">
+
+
+      <!-- Title -->
+      <div id="editor-title" contenteditable="true" data-placeholder="Title"
+         class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4 break-words"></div>
+
+      <!-- Subtitle -->
+      <div id="editor-subtitle" contenteditable="true" data-placeholder="Add a subtitle..."
+         class="text-xl text-gray-400 font-normal leading-relaxed mb-10 break-words"></div>
+
+      <hr class="border-gray-200 mb-10" />
+
+      <!-- Body -->
+      <div id="editor-description" contenteditable="true" data-placeholder="Tell your story..."
+         class="text-lg text-gray-800 leading-[1.8] min-h-64 break-words"></div>
+
+   </main>
+
+   {% include "../components/_footer.html" %}
+
+<script>
+   var savedRange = null;
+   var activeEditorEl = null;
+   var menuOpen = false;
+
+   var titleEl = document.getElementById('editor-title');
+   var subtitleEl = document.getElementById('editor-subtitle');
+   var descEl = document.getElementById('editor-description');
+   var plusBtn = document.getElementById('plus-btn');
+   var plusMenu = document.getElementById('plus-menu');
+   var plusIcon = document.getElementById('plus-icon');
+   var mainEl = document.getElementById('editor-main');
+
+   // ── Sync editors ──────────────────────────────────────────────
+   titleEl.addEventListener('input', function () {
+      document.getElementById('hidden-title').value = titleEl.innerText.trim();
+
+   });
+   subtitleEl.addEventListener('input', function () {
+      document.getElementById('hidden-subtitle').value = subtitleEl.innerText.trim();
+   });
+   descEl.addEventListener('input', function () {
+      document.getElementById('hidden-description').value = descEl.innerHTML;
+   });
+
+   // ── Enter key jumps between fields ─────────────────────────────
+   titleEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); subtitleEl.focus(); }
+   });
+   subtitleEl.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); descEl.focus(); }
+   });
+
+   // ── + button positioning ───────────────────────────────────────
+   document.addEventListener('selectionchange', updatePlusBtn);
+   window.addEventListener('scroll', updatePlusBtn, { passive: true });
+   window.addEventListener('resize', updatePlusBtn, { passive: true });
+
+   function updatePlusBtn() {
+      if (menuOpen) return;
+      var sel = window.getSelection();
+      if (!sel || !sel.rangeCount || !sel.isCollapsed) { hidePlus(); return; }
+
+      var node = sel.anchorNode;
+      if (!descEl || (!descEl.contains(node) && descEl !== node)) { hidePlus(); return; }
+      activeEditorEl = descEl;
+
+      // Get the current block element
+      var block = node.nodeType === 3 ? node.parentElement : node;
+      var text = (block.innerText !== undefined ? block.innerText : block.textContent) || '';
+      if (text.replace(/​/g, '').trim() !== '') { hidePlus(); return; }
+
+      // Get cursor viewport Y
+      var rect = getCursorRect();
+      if (!rect) { hidePlus(); return; }
+
+      var mainRect = mainEl.getBoundingClientRect();
+      if (mainRect.left < 48) { hidePlus(); return; } // no room on narrow screens
+
+      plusBtn.style.top  = (rect.top + rect.height / 2) + 'px';
+      plusBtn.style.left = (mainRect.left - 44) + 'px';
+      plusBtn.classList.remove('hidden');
+   }
+
+   function getCursorRect() {
+      var sel = window.getSelection();
+      if (!sel || !sel.rangeCount) return null;
+      var range = sel.getRangeAt(0).cloneRange();
+      var rect = range.getBoundingClientRect();
+      if (rect && rect.height > 0) return rect;
+
+      // Zero-width space trick for empty lines
+      var span = document.createElement('span');
+      span.appendChild(document.createTextNode('​'));
+      try {
+         range.insertNode(span);
+         rect = span.getBoundingClientRect();
+         span.parentNode.removeChild(span);
+         // restore
+         var r2 = document.createRange();
+         r2.setStart(sel.anchorNode, sel.anchorOffset);
+         r2.collapse(true);
+         sel.removeAllRanges();
+         sel.addRange(r2);
+      } catch (e) { return null; }
+      return rect && rect.height > 0 ? rect : null;
+   }
+
+   function hidePlus() {
+      plusBtn.classList.add('hidden');
+      closePlusMenu();
+   }
+
+   // ── Menu open/close ────────────────────────────────────────────
+   function togglePlusMenu() {
+      var sel = window.getSelection();
+      if (sel && sel.rangeCount) savedRange = sel.getRangeAt(0).cloneRange();
+
+      if (plusMenu.classList.contains('hidden')) {
+         menuOpen = true;
+         // Remove selection so the blinking caret disappears from editors
+         var sel = window.getSelection();
+         if (sel) sel.removeAllRanges();
+         // Hide placeholder text while menu is open
+         descEl.classList.add('hide-placeholder');
+         plusMenu.classList.remove('hidden');
+         plusMenu.classList.add('flex');
+         plusIcon.style.transform = 'rotate(45deg)';
+      } else {
+         closePlusMenu();
+      }
+   }
+
+   function closePlusMenu() {
+      menuOpen = false;
+      plusMenu.classList.add('hidden');
+      plusMenu.classList.remove('flex');
+      plusIcon.style.transform = '';
+      descEl.classList.remove('hide-placeholder');
+   }
+
+   // Close menu when clicking outside
+   document.addEventListener('mousedown', function (e) {
+      if (!plusBtn.contains(e.target)) closePlusMenu();
+   });
+
+   // Replaces the empty block at saved cursor position with newEl, then focuses after it
+   function insertAtSavedLine(newEl) {
+      if (!savedRange) return;
+
+      var container = savedRange.startContainer;
+      var block = container.nodeType === 3 ? container.parentElement : container;
+
+      // Walk up to the direct child of descEl
+      while (block && block !== descEl && block.parentElement !== descEl) {
+         block = block.parentElement;
+      }
+
+      var afterP = document.createElement('p');
+      afterP.innerHTML = '<br>';
+
+      if (block && block !== descEl && block.parentElement === descEl) {
+         descEl.insertBefore(newEl, block);
+         descEl.insertBefore(afterP, block);
+         descEl.removeChild(block);
+      } else {
+         descEl.appendChild(newEl);
+         descEl.appendChild(afterP);
+      }
+
+      // Place cursor in the fresh paragraph after the inserted element
+      descEl.focus();
+      var range = document.createRange();
+      range.setStart(afterP, 0);
+      range.collapse(true);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+
+      document.getElementById('hidden-description').value = descEl.innerHTML;
+   }
+
+   // ── Menu actions ───────────────────────────────────────────────
+   function menuInsertImage() {
+      closePlusMenu();
+      hidePlus();
+      var rangeSnap = savedRange;
+      var input = document.getElementById('image');
+      function onPicked() {
+         input.removeEventListener('change', onPicked);
+         var file = input.files[0];
+         if (!file) return;
+         var reader = new FileReader();
+         reader.onload = function (e) {
+            var img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = '';
+            savedRange = rangeSnap;
+            insertAtSavedLine(img);
+         };
+         reader.readAsDataURL(file);
+         input.value = '';
+      }
+      input.addEventListener('change', onPicked);
+      input.click();
+   }
+
+   function menuInsertVideo() {
+      var url = prompt('Paste a YouTube video URL:');
+      closePlusMenu();
+      hidePlus();
+      if (!url) return;
+      var match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+      var id = match ? match[1] : null;
+      if (!id) { alert('Please enter a valid YouTube URL.'); return; }
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube.com/embed/' + id;
+      iframe.allowFullscreen = true;
+      insertAtSavedLine(iframe);
+   }
+
+   function menuInsertCode() {
+      closePlusMenu();
+      hidePlus();
+      if (!savedRange) return;
+
+      // Build pre with one blank line so cursor lands on line 2
+      var pre = document.createElement('pre');
+      var textNode = document.createTextNode('\n');
+      pre.appendChild(textNode);
+
+      // Find and replace the empty block (same logic as insertAtSavedLine)
+      var container = savedRange.startContainer;
+      var block = container.nodeType === 3 ? container.parentElement : container;
+      while (block && block !== descEl && block.parentElement !== descEl) {
+         block = block.parentElement;
+      }
+      var afterP = document.createElement('p');
+      afterP.innerHTML = '<br>';
+      if (block && block !== descEl && block.parentElement === descEl) {
+         descEl.insertBefore(pre, block);
+         descEl.insertBefore(afterP, block);
+         descEl.removeChild(block);
+      } else {
+         descEl.appendChild(pre);
+         descEl.appendChild(afterP);
+      }
+
+      // Place cursor inside the pre, after the leading newline (line 2)
+      descEl.focus();
+      var range = document.createRange();
+      range.setStart(textNode, textNode.length);
+      range.collapse(true);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+
+      document.getElementById('hidden-description').value = descEl.innerHTML;
+   }
+
+   function menuInsertDivider() {
+      closePlusMenu();
+      hidePlus();
+      insertAtSavedLine(document.createElement('hr'));
+   }
+
+
+   // ── Submit ─────────────────────────────────────────────────────
+   function submitBlog() {
+      document.getElementById('hidden-title').value = titleEl.innerText.trim();
+      document.getElementById('hidden-subtitle').value = subtitleEl.innerText.trim();
+      document.getElementById('hidden-description').value = descEl.innerHTML;
+
+      if (!document.getElementById('hidden-title').value) {
+         titleEl.focus();
+         return;
+      }
+
+      var form = document.getElementById('blog-form');
+      form.appendChild(document.getElementById('image'));
+      form.submit();
+   }
+</script>
+
 </body>
 </html>

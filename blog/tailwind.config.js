@@ -2,8 +2,11 @@
 module.exports = {
   content: ['./content/templates/**/*.html'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        charter: ['Charter', 'Bitstream Charter', 'Sitka Text', 'Cambria', 'serif'],
+      },
+    },
   },
   plugins: [],
 }
-

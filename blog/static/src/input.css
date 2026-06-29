@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+    @layer base {
+    html {
+        font-family: Charter, 'Bitstream Charter', 'Sitka Text', Cambria, serif;
+    }
+    }

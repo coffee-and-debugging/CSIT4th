@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   {% load static %}
+   <link href="{% static 'src/output.css' %}" rel="stylesheet">
+   <title>Terms &amp; Conditions — Blog</title>
+</head>
+<body class="flex flex-col min-h-screen bg-white">
+
+   {% include "../components/_navbar.html" %}
+
+   <main class="flex-1 px-4 md:px-8 py-14">
+      <div class="max-w-2xl mx-auto">
+
+         <h1 class="text-3xl font-bold text-gray-900 mb-2">Terms &amp; Conditions</h1>
+         <p class="text-sm text-gray-400 mb-10">Last updated: {% now "F j, Y" %}</p>
+
+         <div class="space-y-10 text-gray-700 text-sm leading-relaxed">
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">1. Acceptance of Terms</h2>
+               <p>By creating an account or using this blog platform, you agree to be bound by these Terms &amp; Conditions. If you do not agree, please do not use the platform.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">2. User Accounts</h2>
+               <p>You must provide accurate information when registering. You are responsible for keeping your password secure and for all activity that occurs under your account. Notify us immediately if you suspect unauthorized use of your account.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">3. Content You Post</h2>
+               <p class="mb-2">You retain ownership of the content you publish on this platform. By posting, you grant us a non-exclusive license to display your content on the platform. You agree not to post content that:</p>
+               <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                  <li>Is unlawful, harmful, or harassing</li>
+                  <li>Infringes on any third-party intellectual property rights</li>
+                  <li>Contains spam, malware, or misleading information</li>
+                  <li>Violates the privacy of others</li>
+               </ul>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">4. Content Removal</h2>
+               <p>We reserve the right to remove any content that violates these terms or that we find objectionable, without prior notice and at our sole discretion.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">5. Intellectual Property</h2>
+               <p>All platform design, code, and branding belong to us. You may not copy, reproduce, or distribute any part of the platform without explicit written permission.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">6. Privacy</h2>
+               <p>We collect basic account information (username, email) solely to operate the platform. We do not sell your data to third parties. Passwords are stored securely and are never accessible in plain text.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">7. Disclaimer of Warranties</h2>
+               <p>This platform is provided "as is" without warranties of any kind. We do not guarantee that the platform will be uninterrupted, error-free, or free of harmful components.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">8. Limitation of Liability</h2>
+               <p>We are not liable for any indirect, incidental, or consequential damages arising from your use of this platform or from content posted by other users.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">9. Account Termination</h2>
+               <p>We may suspend or terminate your account at any time if you violate these terms. You may also delete your account at any time by contacting us.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">10. Changes to These Terms</h2>
+               <p>We may update these terms from time to time. Continued use of the platform after changes are posted means you accept the updated terms.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">11. Contact</h2>
+               <p>If you have any questions about these terms, feel free to reach out to us through the platform.</p>
+            </section>
+
+         </div>
+
+         <div class="mt-12 pt-8 border-t border-gray-200">
+            <a href="/register/"
+               class="text-sm text-green-700 font-medium hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded">
+               &larr; Back to registration
+            </a>
+         </div>
+
+      </div>
+   </main>
+
+   {% include "../components/_footer.html" %}
+
+</body>
+</html>
