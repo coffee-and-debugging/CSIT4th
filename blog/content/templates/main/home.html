@@ -1,4 +1,3 @@
-<!-- home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,50 +12,77 @@
    {% include "../components/_navbar.html" %}
 
    <main class="flex-1 px-4 md:px-8 py-10">
-      <div class="max-w-3xl mx-auto">
+      <div class="max-w-4xl mx-auto">
 
-         <!-- Page header -->
-         <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-200">
-            <h1 class="text-2xl font-bold text-gray-900">Recent Posts</h1>
+         <!-- Header row -->
+         <div class="flex items-center justify-between mb-10 pb-5 border-b border-gray-200">
+            <h1 class="text-xl font-bold text-gray-900 tracking-tight">Recent Posts</h1>
+            {% if user.is_authenticated %}
             <a href="{% url 'create_blog' %}"
-               class="text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-1">
+               class="text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors px-4 py-1.5 rounded-full focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-1">
                + New post
             </a>
+            {% endif %}
          </div>
 
          {% if blogs %}
          <div class="divide-y divide-gray-100">
             {% for blog in blogs %}
-            <article class="py-7 flex gap-5 items-start">
+            <article class="py-8 flex items-start gap-6 md:gap-10">
+
+               <!-- Left: text content -->
                <div class="flex-1 min-w-0">
-                  <h2 class="text-base font-semibold text-gray-900 leading-snug mb-1">
-                     <a href="/blog/{{ blog.id }}/" class="hover:text-green-700 transition-colors">{{ blog.title }}</a>
-                  </h2>
-                  <p class="text-sm text-gray-500 leading-relaxed line-clamp-2 mb-3">{{ blog.subtitle }}</p>
-                  <div class="flex items-center gap-4">
-                     <span class="text-xs text-gray-400">{{ blog.created_at|date:"M d, Y" }}</span>
-                     <a href="/blog/{{ blog.id }}/"
-                        class="text-xs text-green-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded">
-                        Read &rarr;
-                     </a>
+
+                  <!-- Author + date -->
+                  <div class="flex items-center gap-2 mb-3">
+                     <span class="inline-flex items-center justify-center size-6 rounded-full bg-gray-200 text-gray-600 text-xs font-semibold shrink-0 select-none">
+                        {{ blog.author.username|first|upper }}
+                     </span>
+                     <span class="text-sm text-gray-600 font-medium">{{ blog.author.username }}</span>
+                     <span class="text-gray-300 text-xs">·</span>
+                     <span class="text-xs text-gray-400">{{ blog.created_at|date:"F d, Y" }}</span>
                   </div>
+
+                  <!-- Title -->
+                  <h2 class="text-lg md:text-xl font-bold text-gray-900 leading-snug mb-1.5">
+                     <a href="/blog/{{ blog.id }}/" class="hover:text-green-700 transition-colors">
+                        {{ blog.title }}
+                     </a>
+                  </h2>
+
+                  <!-- Subtitle -->
+                  <p class="text-sm text-gray-500 leading-relaxed line-clamp-2 mb-4">
+                     {{ blog.subtitle }}
+                  </p>
+
+                  <!-- Read link -->
+                  <a href="/blog/{{ blog.id }}/"
+                     class="text-xs font-medium text-green-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded">
+                     Read &rarr;
+                  </a>
                </div>
+
+               <!-- Right: thumbnail -->
                {% if blog.image %}
-               <a href="/blog/{{ blog.id }}/"
-                  class="shrink-0 w-24 h-16 md:w-32 md:h-20 rounded-lg overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500">
-                  <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="w-full h-full object-cover" />
+               <a href="/blog/{{ blog.id }}/" class="shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded-xl">
+                  <img src="{{ blog.image.url }}" alt="{{ blog.title }}"
+                     class="w-28 h-20 md:w-40 md:h-28 object-cover rounded-xl" />
                </a>
                {% endif %}
+
             </article>
             {% endfor %}
          </div>
+
          {% else %}
-         <div class="py-16 text-center text-gray-500">
-            <p class="mb-4">No posts yet.</p>
+         <div class="py-24 text-center">
+            <p class="text-gray-400 text-sm mb-3">No posts yet.</p>
+            {% if user.is_authenticated %}
             <a href="{% url 'create_blog' %}"
-               class="text-sm text-green-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded">
+               class="text-sm font-medium text-green-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded">
                Write the first one &rarr;
             </a>
+            {% endif %}
          </div>
          {% endif %}
 

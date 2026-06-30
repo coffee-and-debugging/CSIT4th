@@ -129,3 +129,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+# Allow large POST bodies for base64-encoded inline images in the editor
+DATA_UPLOAD_MAX_MEMORY_SIZE = 52428800  # 50 MB

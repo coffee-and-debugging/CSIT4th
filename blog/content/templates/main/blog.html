@@ -1,11 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   {% load static %}
+   <link href="{% static 'src/output.css' %}" rel="stylesheet">
+   <title>{{ blog.title|default:"Blog Post" }} — Blog</title>
 </head>
-<body>
-    <h1>Welcome to My Blog</h1>
+<body class="flex flex-col min-h-screen bg-white">
+
+   {% include "../components/_navbar.html" %}
+
+   <main class="flex-1 px-4 md:px-8 py-14">
+      <article class="max-w-2xl mx-auto">
+
+         <!-- Back -->
+         <a href="{% url 'home' %}"
+            class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-10 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded">
+            <svg class="size-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M13 8H3M7 4l-4 4 4 4" />
+            </svg>
+            All posts
+         </a>
+
+         <!-- Header -->
+         <header class="mb-10">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight tracking-tight mb-4">
+               {{ blog.title|default:"Untitled Post" }}
+            </h1>
+            <p class="text-xl text-gray-500 leading-relaxed mb-6">
+               {{ blog.subtitle|default:"" }}
+            </p>
+            <div class="flex items-center gap-4 pb-8 border-b border-gray-200">
+               <div class="flex-1 flex items-center gap-2 text-sm text-gray-400">
+                  <time datetime="{{ blog.created_at|date:'Y-m-d' }}">
+                     {{ blog.created_at|date:"F j, Y" }}
+                  </time>
+               </div>
+               <a href="/edit_blog?id={{ blog.id }}"
+                  class="text-sm text-green-700 font-medium hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded">
+                  Edit post
+               </a>
+            </div>
+         </header>
+
+         <!-- Cover image -->
+         {% if blog.image %}
+         <div class="mb-10 rounded-xl overflow-hidden">
+            <img src="{{ blog.image.url }}" alt="{{ blog.title }}"
+               class="w-full object-cover max-h-[480px]" />
+         </div>
+         {% endif %}
+
+         <!-- Body -->
+         <div class="text-gray-800 text-lg leading-[1.8] space-y-5">
+            {{ blog.description|safe }}
+         </div>
+
+         <!-- Footer actions -->
+         <div class="mt-14 pt-8 border-t border-gray-200">
+            <a href="{% url 'home' %}"
+               class="inline-flex items-center gap-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 transition-colors px-5 py-2.5 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500">
+               &larr; Back to posts
+            </a>
+         </div>
+
+      </article>
+   </main>
+
+   {% include "../components/_footer.html" %}
+
 </body>
 </html>
