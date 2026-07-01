@@ -25,6 +25,21 @@
 
          <!-- Header -->
          <header class="mb-10">
+            <div class="flex items-center gap-3 text-sm text-gray-400 mb-6">
+               {% if blog.author.profile.profile_picture %}
+               <img src="{{ blog.author.profile.profile_picture.url }}" alt="{{ blog.author.username }}"
+                  class="size-7 rounded-full object-cover shrink-0" />
+               {% else %}
+               <span class="inline-flex items-center justify-center size-7 rounded-full bg-gray-200 text-gray-600 text-xs font-semibold shrink-0 select-none">
+                  {{ blog.author.username|first|upper }}
+               </span>
+               {% endif %}
+               <span class="font-medium text-gray-700">{{ blog.author.first_name|default:blog.author.username }}</span>
+               <span class="text-gray-300">·</span>
+               <time datetime="{{ blog.created_at|date:'Y-m-d' }}">
+                  {{ blog.created_at|date:"F j, Y" }}
+               </time>
+            </div>
             <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight tracking-tight mb-4">
                {{ blog.title|default:"Untitled Post" }}
             </h1>
@@ -32,15 +47,19 @@
                {{ blog.subtitle|default:"" }}
             </p>
             <div class="flex items-center gap-4 pb-8 border-b border-gray-200">
-               <div class="flex-1 flex items-center gap-2 text-sm text-gray-400">
-                  <time datetime="{{ blog.created_at|date:'Y-m-d' }}">
-                     {{ blog.created_at|date:"F j, Y" }}
-                  </time>
-               </div>
+               <div class="flex-1"></div>
+               {% if user == blog.author %}
                <a href="/edit_blog?id={{ blog.id }}"
                   class="text-sm text-green-700 font-medium hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded">
                   Edit post
                </a>
+               <form method="post" action="{% url 'delete_blog' blog.id %}" class="inline">
+                  {% csrf_token %}
+                  <button type="submit" class="text-sm text-red-600 font-medium hover:underline focus:outline-none">
+                     Delete
+                  </button>
+               </form>
+               {% endif %}
             </div>
          </header>
 

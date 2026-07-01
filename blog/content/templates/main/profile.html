@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   {% load static %}
+   <link href="{% static 'src/output.css' %}" rel="stylesheet">
+   <title>{{ user.username }}'s profile</title>
+</head>
+<body class="flex flex-col min-h-screen bg-white">
+
+   {% include "../components/_navbar.html" %}
+
+   <main class="flex-1 px-4 md:px-8 py-12">
+      <div class="max-w-2xl mx-auto">
+
+         <!-- Profile header -->
+         <div class="flex flex-col items-center text-center mb-10">
+            <form method="post" enctype="multipart/form-data" id="pic_form" class="mb-4">
+               {% csrf_token %}
+               <label for="profile_picture" class="block cursor-pointer w-fit mx-auto group">
+                  <div class="relative size-24 rounded-full overflow-hidden ring-2 ring-gray-100">
+                     {% if user_profile.profile_picture %}
+                     <img src="{{ user_profile.profile_picture.url }}" alt="{{ user.username }}"
+                        class="w-full h-full object-cover" />
+                     {% else %}
+                     <div class="w-full h-full bg-gray-900 text-white text-3xl font-bold flex items-center justify-center select-none">
+                        {{ user.username|first|upper }}
+                     </div>
+                     {% endif %}
+                     <div class="absolute bottom-0 inset-x-0 bg-green-500/80 flex justify-center py-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg class="size-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                           <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                           <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                     </div>
+                  </div>
+               </label>
+               <input type="file" id="profile_picture" name="profile_picture" accept="image/*" class="sr-only" />
+            </form>
+            <h1 class="text-2xl font-bold text-gray-900 tracking-tight">{{ user.username }}</h1>
+            <p class="text-sm text-gray-400 mt-1">{{ user.email }}</p>
+         </div>
+
+         <!-- Quick actions -->
+         <div class="flex flex-wrap justify-center gap-3 mb-10">
+            <a href="{% url 'create_blog' %}"
+               class="text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors px-5 py-2.5 rounded-full focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-1">
+               + Write
+            </a>
+            <form method="post" action="{% url 'logout' %}">
+               {% csrf_token %}
+               <button type="submit"
+                  class="text-sm font-medium text-red-600 border border-red-200 hover:bg-red-50 transition-colors px-5 py-2.5 rounded-full focus:outline-none">
+                  Sign out
+               </button>
+            </form>
+         </div>
+
+         <!-- My posts -->
+         <div>
+            <h2 class="text-sm font-semibold text-gray-700 mb-4 pb-3 border-b border-gray-100">My posts ({{ blogs|length }})</h2>
+            {% if blogs %}
+            <div class="divide-y divide-gray-100">
+               {% for b in blogs %}
+               <div class="py-4 flex items-center justify-between gap-4">
+                  <div class="flex-1 min-w-0">
+                     <a href="/blog/{{ b.id }}/"
+                        class="text-sm font-semibold text-gray-900 hover:text-green-700 transition-colors line-clamp-1">
+                        {{ b.title }}
+                     </a>
+                     <p class="text-xs text-gray-400 mt-0.5">{{ b.created_at|date:"F j, Y" }}</p>
+                  </div>
+                  <div class="flex items-center gap-3 shrink-0">
+                     <a href="/edit_blog?id={{ b.id }}"
+                        class="text-xs font-medium text-gray-500 hover:text-gray-900 transition-colors">Edit</a>
+                     <form method="post" action="{% url 'delete_blog' b.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="text-xs font-medium text-red-500 hover:text-red-700 transition-colors">Delete</button>
+                     </form>
+                  </div>
+               </div>
+               {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-sm text-gray-400 py-6 text-center">You haven't written anything yet.
+               <a href="{% url 'create_blog' %}" class="text-green-700 hover:underline">Start now &rarr;</a>
+            </p>
+            {% endif %}
+         </div>
+
+      </div>
+   </main>
+
+   {% include "../components/_footer.html" %}
+
+<script>
+   document.getElementById('profile_picture').addEventListener('change', function () {
+      if (this.files[0]) document.getElementById('pic_form').submit();
+   });
+</script>
+
+</body>
+</html>

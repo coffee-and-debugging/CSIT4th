@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as Login
-from ..models import Blog
+from ..models import Profile
 
 def login(request):
     if request.method=="POST":
@@ -23,13 +22,15 @@ def login(request):
 
 def register(request):
     if request.method == "POST":
-        username= request.POST.get("username")
-        email= request.POST.get("email")
-        password= request.POST.get("password")
-        user= User(username=username, email=email)
+        username = request.POST.get("username")
+        full_name = request.POST.get("full_name", "")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user = User(username=username, email=email, first_name=full_name)
         user.set_password(password)
         user.save()
+        Profile.objects.create(user=user, profile_picture=request.FILES.get("profile_picture"))
         return redirect("login")
-    
+
     return render(request, "auth/register.html")
         

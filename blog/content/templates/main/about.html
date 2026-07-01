@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   {% load static %}
+   <link href="{% static 'src/output.css' %}" rel="stylesheet">
+   <title>About — Blog</title>
+</head>
+<body class="flex flex-col min-h-screen bg-white">
+
+   {% include "../components/_navbar.html" %}
+
+   <main class="flex-1 px-4 md:px-8 py-14">
+      <div class="max-w-2xl mx-auto">
+
+         <h1 class="text-3xl font-bold text-gray-900 mb-2">About</h1>
+         <p class="text-sm text-gray-400 mb-10">A place to write, read, and think.</p>
+
+         <div class="space-y-10 text-gray-700 text-sm leading-relaxed">
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">What is this?</h2>
+               <p>This is a simple, distraction-free blogging platform built for people who want to write and share ideas without the noise. No ads, no algorithms pushing content — just writing and reading.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">Who is it for?</h2>
+               <p>Anyone who has something to say. Whether you are a student documenting what you learn, a developer writing technical notes, or someone who just wants to share stories — this platform is for you. Creating an account takes seconds and publishing is even faster.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">What can you do here?</h2>
+               <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                  <li>Write and publish blog posts with a title, subtitle, description, and cover image</li>
+                  <li>Edit or delete your own posts at any time</li>
+                  <li>Set a profile picture that appears next to your posts</li>
+                  <li>Read posts from other writers on the home feed</li>
+                  <li>Search posts by title to find what you are looking for</li>
+               </ul>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">Our approach</h2>
+               <p>We keep things intentionally minimal. The focus is on your words, not on engagement metrics or follower counts. There are no likes, no comments, no notifications demanding your attention — just a clean space to write and read.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">Privacy</h2>
+               <p>We collect only what is necessary to run the platform — your username, email, and the content you choose to publish. We do not sell your data or track you across the web. Your password is stored securely and is never readable, even by us.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">Built with</h2>
+               <p>This platform is built with Django on the backend and Tailwind CSS on the frontend. It is a straightforward project — no unnecessary complexity, just the tools needed to do the job well.</p>
+            </section>
+
+            <section>
+               <h2 class="text-base font-semibold text-gray-900 mb-3">Get started</h2>
+               <p>Create a free account and write your first post today. It takes less than a minute to get set up.</p>
+            </section>
+
+         </div>
+
+         <div class="mt-12 pt-8 border-t border-gray-200 flex items-center gap-6">
+            <a href="{% url 'home' %}"
+               class="text-sm text-green-700 font-medium hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 rounded">
+               &larr; Back to home
+            </a>
+            {% if not user.is_authenticated %}
+            <a href="/register/"
+               class="text-sm font-semibold text-white bg-green-600 hover:bg-green-700 transition-colors px-5 py-2 rounded-full focus:outline-none">
+               Get started
+            </a>
+            {% endif %}
+         </div>
+
+      </div>
+   </main>
+
+   {% include "../components/_footer.html" %}
+
+</body>
+</html>
